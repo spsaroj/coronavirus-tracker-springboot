@@ -4,6 +4,11 @@ public class LocationStats {
     private String state;
     private String country;
     private int latestReportedCases;
+    private int delta;
+
+    public int getDelta() { return delta; }
+
+    public void setDelta(int delta) { this.delta = delta; }
 
     public String getState() {
         return state;

@@ -22,6 +22,10 @@ public class CoronaVirusDataService {
 
     private List<LocationStats> everyStats = new ArrayList<>();
 
+    public List<LocationStats> getEveryStats() {
+        return everyStats;
+    }
+
     @PostConstruct
     //This is telling spring that when you construct this instance of service, after it is done, execute this method.
     @Scheduled(cron = "* * 1 * * *")     //This will update the method. Goes like: seconds, minute, hour, day, month, year. This does first hour of every day
@@ -46,9 +50,12 @@ public class CoronaVirusDataService {
 
             locationStats.setState(record.get("Province/State"));
             locationStats.setCountry(record.get("Country/Region"));
-            locationStats.setLatestReportedCases(Integer.parseInt(record.get(record.size()-1)));
+            int latestCases = Integer.parseInt(record.get(record.size()-1));
+            int prevDayCases = Integer.parseInt(record.get(record.size()-2));
+            locationStats.setLatestReportedCases(latestCases);
+            locationStats.setDelta(latestCases - prevDayCases);
 
-            System.out.println(locationStats.toString());
+//            System.out.println(locationStats.toString());
 
             newStats.add(locationStats);
         }
